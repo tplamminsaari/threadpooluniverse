@@ -1,0 +1,33 @@
+---
+# Based on Google Style, but with modifications you requested
+
+Language: Cpp
+BasedOnStyle: Google
+
+# 1. Opening braces on a new line (Allman style)
+BreakBeforeBraces: Allman
+AllowShortFunctionsOnASingleLine: None # Ensure functions also follow Allman
+AllowShortBlocksOnASingleLine: false  # Ensure blocks also follow Allman
+AllowShortCaseLabelsOnASingleLine: false # Ensure case labels also follow Allman
+AllowShortIfStatementsOnASingleLine: Never # Ensure if statements also follow Allman
+AllowShortLoopsOnASingleLine: false # Ensure loops also follow Allman
+
+# 2. Space inside parentheses
+SpacesInParentheses: true
+SpaceAfterCStyleCast: true # Often desired with SpacesInParentheses
+SpacesInConditionalStatement: true # Often desired with SpacesInParentheses
+SpacesInContainerLiterals: true # Often desired with SpacesInParentheses
+
+# 3. Indentation should be 4 spaces
+IndentWidth: 4
+TabWidth: 4       # Usually set equal to IndentWidth
+UseTab: Never     # Use spaces for indentation
+
+# Other common settings you might like
+ColumnLimit: 100  # Or your preferred line length
+AccessModifierOffset: -4 # Indent access modifiers (public, private, protected)
+PointerAlignment: Right # Align pointers/references to the right (e.g., int* p)
+AlignTrailingComments: true
+SortIncludes: true
+...
+
