@@ -1,5 +1,7 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.15)
 project(threadpooluniverselib)
+
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 # Get gTest
 include(FetchContent)
@@ -31,3 +33,8 @@ target_link_libraries(threadpooluniverselib_test threadpooluniverselib gtest)
 
 include(GoogleTest)
 gtest_discover_tests(threadpooluniverselib_test)
+
+get_property(all_targets DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY BUILDSYSTEM_TARGETS)
+foreach(target ${all_targets})
+    set_property(TARGET ${target} PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+endforeach()

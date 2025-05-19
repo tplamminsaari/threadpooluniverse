@@ -17,6 +17,7 @@ SpacesInParentheses: true
 SpaceAfterCStyleCast: true # Often desired with SpacesInParentheses
 SpacesInConditionalStatement: true # Often desired with SpacesInParentheses
 SpacesInContainerLiterals: true # Often desired with SpacesInParentheses
+SpaceBeforeParens: Never
 
 # 3. Indentation should be 4 spaces
 IndentWidth: 4

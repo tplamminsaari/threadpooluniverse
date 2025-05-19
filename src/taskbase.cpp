@@ -1,9 +1,12 @@
 
+#include <stdexcept>
 #include "../include/taskbase.h"
 
 namespace threadpooluniverse
 {
-    TaskBase::TaskBase( uint64_t taskId )
+    TaskBase::TaskBase( uint64_t taskId ) :
+        mTaskId( taskId ),
+        mCanceled( false )
     {
     }
 
@@ -18,6 +21,10 @@ namespace threadpooluniverse
 
     void TaskBase::cancel()
     {
+        if( mCanceled )
+        {
+            throw std::runtime_error( "Already canceled" );
+        }
         mCanceled = true;
     }
 
