@@ -7,11 +7,13 @@ This project has been licensed under the MIT License.
 
 ## How to build
 
-You need CMake 3.15 or newer to generate the build files or Visual Studio solution.
+This project uses default pretty modern C++ standard so you need build environment that supports C++17.
+
+You also need CMake 3.15 or newer to generate the build files.
 
 ### Building in Windows
 
-To create the Visual Studio solution, run following CMake command in Windows command prompt:
+In Windows, you need Visual Studio with Desktop C++ enabled. To create the Visual Studio solution, run following CMake command in Windows command prompt:
 
 ```
 cmake -A x64 -DCMAKE_GENERATOR_PLATFORM="x64" -S . -B ./build
@@ -19,7 +21,26 @@ cmake -A x64 -DCMAKE_GENERATOR_PLATFORM="x64" -S . -B ./build
 
 This will generate ./build folder where the Visual Studio solution gets created. Open `.\build\threadpooluniverselib.sln` in Visual Studio and build the entire solution. It will generate statically linked library `threadpooluniverselib.lib` you can use to link your project with. The necessary headers can be found from `.\include` folder.
 
+To run the tests, select `threadpooluniverselib_test` as your startup project and run solution by pressing F5 (assuming you have default Visual Studio keybinding).
+
 ### Building in Linux
+
+To build this project in linux, you need the C++ tools installed. To generate the build files, run:
+```
+cmake -S . -B ./build
+```
+
+This will generate the Makefiles to ./build directory. To build the project, run
+```
+cd ./build
+make
+```
+
+To run the tests:
+```
+cd ./build
+./threadpooluniverselib_test 
+```
 
 ## Using in your own project
 
