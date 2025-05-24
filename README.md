@@ -19,9 +19,14 @@ In Windows, you need Visual Studio with Desktop C++ enabled. To create the Visua
 cmake -A x64 -DCMAKE_GENERATOR_PLATFORM="x64" -S . -B ./build
 ```
 
-This will generate ./build folder where the Visual Studio solution gets created. Open `.\build\threadpooluniverselib.sln` in Visual Studio and build the entire solution. It will generate statically linked library `threadpooluniverselib.lib` you can use to link your project with. The necessary headers can be found from `.\include` folder.
+This will create the  `.\build` folder from where you can find the Visual Studio solution. When you build this solution, it will create a statically linked library `threadpooluniverselib.lib` you can use to link your project with.
 
-To run the tests, select `threadpooluniverselib_test` as your startup project and run solution by pressing F5 (assuming you have default Visual Studio keybinding).
+To run the tests, select `threadpooluniverselib_test` as your startup project and run solution by pressing F5 (assuming you have default Visual Studio keybinding). Or run following in your terminal. Change the "Debug" to "Release" if you built the project in release mode.
+
+```
+cd build\Debug
+threadpooluniverselib_test.exe
+```
 
 ### Building in Linux
 
@@ -48,3 +53,5 @@ You can use this threadpooluniverse library in your project with following mecha
 - Build this library locally and link you project against `threadpooluniverse.lib` library and the headers.
 - Use e.g. CMake's "FetchContent" feature to include this library to your build chain and build it as part of your project.
 - Take the source codes and include them directly to be part of your own project and build them together with your project.
+
+When including the sources to your own project, please notice that the source code are in `src` and in `include` directories so you must include both to your project.
