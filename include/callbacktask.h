@@ -20,21 +20,28 @@ namespace threadpooluniverse
     class CallbackTask : public TaskBase
     {
     public:
-        using Callback = std::function<void()>;
+        using ExecuteCallback = std::function<void()>;
+        using ErrorCallback = std::function<void()>;
 
         /**
          * @brief Constructs a CallbackTask with a unique task ID and a callback function.
          * @param taskId Unique identifier for the task.
          * @param callback The function to be executed when the task is run.
+         * @param errorCallback Optional function to handle errors during execution.
+         * 
+         * Executes the callback function when the task is run. If callback function throws an
+         * exception, the errorCallback is invoked.
          */
-        explicit CallbackTask( uint64_t taskId, Callback callback );
-        ~CallbackTask() override;
+        CallbackTask( uint64_t taskId, ExecuteCallback callback, ErrorCallback errorCallback = ErrorCallback() );
+        virtual ~CallbackTask();
 
     public :  // from TaskBase
-        void execute() override;
+        virtual void execute() override;
+        virtual void handleError() override;
 
     private:
-        Callback mCallback;
+        ExecuteCallback mCallback;
+        ErrorCallback mErrorCallback;
     };
 
 }  // namespace threadpooluniverse

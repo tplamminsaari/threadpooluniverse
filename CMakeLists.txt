@@ -16,12 +16,27 @@ FetchContent_MakeAvailable(googletest)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Helper function to group source code files in IDE.
+function(auto_source_group sources base_dir)
+    foreach(_source IN LISTS ${sources})
+        get_filename_component(_abs_source "${_source}" ABSOLUTE)
+        file(RELATIVE_PATH _rel_path "${base_dir}" "${_abs_source}")
+        get_filename_component(_rel_dir "${_rel_path}" PATH)
+        if(_rel_dir AND NOT _rel_dir STREQUAL ".")
+            string(REPLACE "/" "\\" _group_path "${_rel_dir}")
+            source_group("${_group_path}" FILES "${_source}")
+        endif()
+    endforeach()
+endfunction()
+
 # Compile the library.
 file(GLOB_RECURSE PROJECT_SOURCE_FILES "include/*h" "src/*.h" "src/*.cpp")
+auto_source_group(PROJECT_SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}")
 add_library(threadpooluniverselib STATIC ${PROJECT_SOURCE_FILES})
 
 # Gather all the test files and build the tests.
-file(GLOB_RECURSE TEST_FILES "src_test/*.cpp")
+file(GLOB_RECURSE TEST_FILES "src_test/*.h" "src_test/*.cpp")
+auto_source_group(TEST_FILES "${CMAKE_CURRENT_SOURCE_DIR}")
 add_executable(threadpooluniverselib_test ${TEST_FILES})
 
 target_include_directories(threadpooluniverselib_test PUBLIC

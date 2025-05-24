@@ -27,19 +27,21 @@ namespace threadpooluniverse
 
     void TaskBase::cancel()
     {
-        if( mCanceled )
+        if( mCanceled.load() )
         {
-            throw std::runtime_error( "Already canceled" );
+            return;
         }
-        mCanceled = true;
+        mCanceled.store( true );
     }
 
     bool TaskBase::isCanceled() const
     {
-        return mCanceled;
+        return mCanceled.load();
     }
 
-    void TaskBase::execute()
+    void TaskBase::handleError()
     {
+        // Default implementation does nothing.
     }
-}
+
+}  // namespace threadpooluniverse

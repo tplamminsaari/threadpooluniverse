@@ -9,9 +9,11 @@
 
 namespace threadpooluniverse
 {
-    CallbackTask::CallbackTask( uint64_t taskId, Callback callback ) :
+CallbackTask::CallbackTask( uint64_t taskId, ExecuteCallback callback, ErrorCallback errorCallback )
+    :
         TaskBase( taskId ),
-        mCallback( std::move( callback ) )
+        mCallback( std::move( callback ) ),
+        mErrorCallback( std::move( errorCallback ) )
     {
     }
 
@@ -24,6 +26,14 @@ namespace threadpooluniverse
         if( mCallback && !isCanceled() )
         {
             mCallback();
+        }
+    }
+
+    void CallbackTask::handleError()
+    {
+        if( mErrorCallback )
+        {
+            mErrorCallback();
         }
     }
 

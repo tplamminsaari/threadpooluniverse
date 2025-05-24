@@ -9,8 +9,18 @@
 
 namespace threadpooluniverse
 {
-    TaskQueueFullException::TaskQueueFullException( const std::string& message )
+    ThreadPoolBaseException::ThreadPoolBaseException( const std::string& message )
         : std::runtime_error( message )
+    {
+    }
+
+    TaskQueueFullException::TaskQueueFullException( const std::string& message )
+        : ThreadPoolBaseException( message )
+    {
+    }
+
+    AlreadyCanceledException::AlreadyCanceledException( const std::string& message )
+        : ThreadPoolBaseException( message )
     {
     }
 

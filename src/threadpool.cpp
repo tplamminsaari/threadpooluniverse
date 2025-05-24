@@ -12,7 +12,7 @@
 
 namespace threadpooluniverse
 {
-    ThreadPool::ThreadPool( size_t numOfThreads, size_t maxQueueSize ) :
+    ThreadPool::ThreadPool( size_t numOfThreads, const std::optional<size_t> maxQueueSize ) :
         mMaxQueueSize( maxQueueSize ),
         mNumberOfThreads( numOfThreads ),
         mStarted( false ),
@@ -47,7 +47,7 @@ namespace threadpooluniverse
     void ThreadPool::pushToQueue( std::unique_ptr<TaskBase> task )
     {
         std::lock_guard<std::mutex> lock( mTasksMutex );
-        if( mMaxQueueSize != 0 && mTasks.size() >= mMaxQueueSize )
+        if( mMaxQueueSize.has_value() && mTasks.size() >= mMaxQueueSize.value() )
         {
             // Queue is full, we cannot add more tasks.
             throw TaskQueueFullException( "Task queue full." );
@@ -122,6 +122,12 @@ namespace threadpooluniverse
         {
             mWorkers.emplace_back( std::make_unique<WorkerThread>( *this ) );
         }
+
+        // Wait until all worker threads are running.
+        while( allThreadsRunning() == false )
+        {
+            std::this_thread::sleep_for( std::chrono::milliseconds( 0 ) );
+        }
     }
 
     void ThreadPool::shutdownWorkers()
@@ -175,8 +181,11 @@ namespace threadpooluniverse
 
     void ThreadPool::waitForNotify()
     {
+        // Wait for new tasks to be added to the queue or for a timeout. The timeout is used to
+        // avoid apparent glitches the condition variable seems to have. When notify_all() is called, it
+        // seems that always not every thread wakes although they are waiting on the same condition variable.
         std::unique_lock<std::mutex> lock( mTasksMutex );
-        mTasksCV.wait( lock );
+        mTasksCV.wait_for( lock, std::chrono::seconds( 1 ) );
     }
 
     void ThreadPool::registerRunningWorkerThread()

@@ -13,6 +13,7 @@
 #include <list>
 #include <memory>
 #include <mutex>
+#include <optional>
 #include <thread>
 #include <vector>
 
@@ -24,15 +25,16 @@ namespace threadpooluniverse
     /**
      * @brief ThreadPool queues tasks and excutes them in worker threads.
      */
-    class ThreadPool : public std::enable_shared_from_this<ThreadPool>
+    class ThreadPool
     {
     public:
         /**
          * @brief Creates a thread pool with given number of threads and maximum queue size.
          * @param numOfThreads Number of worker threads.
-         * @param maxQueueSize Maximum number of tasks in queue. 0 means no limit.
+         * @param maxQueueSize Maximum number of tasks in queue. Pass std::nullopt for unlimited
+         * queue size.
          */
-        ThreadPool( size_t numOfThreads, size_t maxQueueSize );
+        ThreadPool( size_t numOfThreads, const std::optional<size_t> maxQueueSize );
 
         ~ThreadPool();
 
@@ -64,9 +66,10 @@ namespace threadpooluniverse
         /**
          * @brief Appends new task to processing queue.
          *
-         * If threadpool has been started, the task will go under execution as
-         * soon as next available worker can pick it.
-         * @param task The task to add.
+         * If threadpool has been started, the task will go under execution as soon as next available
+         * worker can pick it.
+         * @param task The task to add. Takes the ownership of the task instance.
+         * @throws TaskQueueFullException if the task queue is full and cannot accept more tasks.
          */
         void pushToQueue( std::unique_ptr<TaskBase> task );
 
@@ -146,7 +149,7 @@ namespace threadpooluniverse
         void registerRunningWorkerThread();
 
     private:
-        size_t mMaxQueueSize{ 0 };
+        std::optional<size_t> mMaxQueueSize;
         size_t mNumberOfThreads{ 5 };
         size_t mNumberOfRunningWorkerThreads{ 0 };
         std::list<std::unique_ptr<TaskBase>> mTasks;

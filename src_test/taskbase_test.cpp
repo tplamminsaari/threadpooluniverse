@@ -8,17 +8,18 @@
 #include "gtest/gtest.h"
 #include "taskbase.h"
 
+#include "util/dummytask.h"
+
 TEST( TaskBaseTest, Constructor )
 {
-    threadpooluniverse::TaskBase taskBase( 42 );
-    EXPECT_EQ( taskBase.getTaskId(), 42 );
+    threadpooluniverse::DummyTask task( 42 );
+    EXPECT_EQ( task.getTaskId(), 42 );
 }
 
 TEST( TaskBaseTest, Cancel )
 {
-    threadpooluniverse::TaskBase taskBase( 42 );
-    EXPECT_FALSE( taskBase.isCanceled() );
-    taskBase.cancel();
-    EXPECT_TRUE( taskBase.isCanceled() );
-    EXPECT_THROW( taskBase.cancel(), std::runtime_error );
+    threadpooluniverse::DummyTask task( 42 );
+    EXPECT_FALSE( task.isCanceled() );
+    task.cancel();
+    EXPECT_TRUE( task.isCanceled() );
 }

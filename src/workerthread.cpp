@@ -58,13 +58,18 @@ namespace threadpooluniverse
                 {
                     task->execute();
                 }
-                catch( const std::exception& e )
+                catch( const std::exception& )
                 {
                     // Don't let exceptions propagate out of the thread because it would
-                    // terminate thread. We log the error and continue. Only owning thread pool
-                    // is the one that can shut down the thread.
-
-                    // TODO: Add error handling support to the tasks.
+                    // terminate thread. Call the error handling method of the task instead.
+                    try
+                    {
+                        task->handleError();
+                    }
+                    catch( const std::exception& )
+                    {
+                        // Handle error threw an exception. Ignore it for now.
+                    }
                 }
                 mOwningThreadPool.taskCompleted();
             }
