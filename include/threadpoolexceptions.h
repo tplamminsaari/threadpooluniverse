@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) 2025 Tomi Lamminsaari
+ *
+ * This software is licensed under the MIT License.
+ * See the accompanying LICENSE file for more details.
+ */
+
 #ifndef THREADPOOLUNIVERSE_THREADPOOLEXCEPTIONS_H
 #define THREADPOOLUNIVERSE_THREADPOOLEXCEPTIONS_H
 
@@ -5,6 +12,9 @@
 
 namespace threadpooluniverse
 {
+    /**
+     * @brief Exception thrown when the task queue is full.
+     */
     class TaskQueueFullException : public std::runtime_error
     {
     public:

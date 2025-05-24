@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) 2025 Tomi Lamminsaari
+ *
+ * This software is licensed under the MIT License.
+ * See the accompanying LICENSE file for more details.
+ */
 
 #include "workerthread.h"
 #include "../include/taskbase.h"
@@ -57,6 +63,8 @@ namespace threadpooluniverse
                     // Don't let exceptions propagate out of the thread because it would
                     // terminate thread. We log the error and continue. Only owning thread pool
                     // is the one that can shut down the thread.
+
+                    // TODO: Add error handling support to the tasks.
                 }
                 mOwningThreadPool.taskCompleted();
             }

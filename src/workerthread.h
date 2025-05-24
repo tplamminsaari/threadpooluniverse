@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) 2025 Tomi Lamminsaari
+ *
+ * This software is licensed under the MIT License.
+ * See the accompanying LICENSE file for more details.
+ */
 
 #ifndef THREADPOOLUNIVERSE_WORKERTHREAD_H
 #define THREADPOOLUNIVERSE_WORKERTHREAD_H
@@ -10,6 +16,9 @@ namespace threadpooluniverse
 {
     class ThreadPool;
 
+    /**
+     * @brief WorkerThread is a thread managed by thread pool and that processes tasks from the ThreadPool.
+     */
     class WorkerThread
     {
     public:
